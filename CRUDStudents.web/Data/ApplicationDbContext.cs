@@ -19,6 +19,10 @@ namespace CRUDStudents.web.Data
         // this property will be used to access the Students table in the database
 
         public DbSet<Students> Students { get; set; }
+        public DbSet<Courses> Courses { get; set; }
+        public DbSet<Lecturers> Lecturers { get; set; }
+        public DbSet<StudentCourses> StudentCourses { get; set; }
+        public DbSet<Subjects> Subjects { get; set; }
 
         /*
          What is a DbContext?
@@ -40,5 +44,34 @@ namespace CRUDStudents.web.Data
             •	You can use this property to perform CRUD (Create, Read, Update, Delete) operations on the Students table.
 
          */
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // StudentCourses: Many-to-Many between Students and Courses
+            modelBuilder.Entity<StudentCourses>()
+                .HasOne(sc => sc.Student)
+                .WithMany(s => s.StudentCourses)
+                .HasForeignKey(sc => sc.StudentId);
+
+            modelBuilder.Entity<StudentCourses>()
+                .HasOne(sc => sc.Course)
+                .WithMany(c => c.StudentCourses)
+                .HasForeignKey(sc => sc.CourseId);
+
+            // Subjects: One-to-Many between Courses and Subjects
+            modelBuilder.Entity<Subjects>()
+                .HasOne(s => s.Course)
+                .WithMany(c => c.Subjects)
+                .HasForeignKey(s => s.CourseId);
+
+            // Subjects: One-to-Many between Lecturers and Subjects
+            modelBuilder.Entity<Subjects>()
+                .HasOne(s => s.Lecturer)
+                .WithMany(l => l.Subjects)
+                .HasForeignKey(s => s.LecturerId);
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

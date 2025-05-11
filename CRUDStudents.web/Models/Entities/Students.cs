@@ -19,5 +19,10 @@
         public string Phone { get; set; }
 
         public bool Subscribed { get; set; }
+
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+
+        // Navigation property: A student can have many courses
+        public ICollection<StudentCourses> StudentCourses { get; set; }
     }
 }

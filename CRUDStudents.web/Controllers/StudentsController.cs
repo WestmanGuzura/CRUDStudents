@@ -29,11 +29,11 @@ namespace CRUDStudents.web.Controllers
         //get and save data asychronaously
         public async Task<IActionResult> Add(AddStudentViewModel viewModel)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    // Return the view with validation errors
-            //    return View(viewModel);
-            //}
+            if (!ModelState.IsValid)
+            {
+                // Return the view with validation errors
+                return View(viewModel);
+            }
 
             try
             {
@@ -82,10 +82,11 @@ namespace CRUDStudents.web.Controllers
             var totalStudents = await query.CountAsync();
 
             // Apply pagination
-            var students = await query
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
+             var students = await query
+            .OrderByDescending(s => s.CreatedDate) // Order by CreatedDate in descending order
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
 
 
 
