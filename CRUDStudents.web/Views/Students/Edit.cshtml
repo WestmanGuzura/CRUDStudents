@@ -1,0 +1,71 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+@model CRUDStudents.web.Models.Entities.Students
+
+<h1>Edit Students</h1>
+
+
+@if (Model is null)
+{
+	<p>No Student found</p>
+}
+
+else{
+
+<form method="post">
+
+		@if (TempData["SuccessMessage"] != null)
+		{
+			<div class="alert alert-success">
+				@TempData["SuccessMessage"]
+			</div>
+		}
+
+		@if (TempData["ErrorMessage"] != null)
+		{
+			<div class="alert alert-danger">
+				@TempData["ErrorMessage"]
+			</div>
+		}
+
+	<div class="form-floating mb-3">
+		<input type="text" class="form-control" id="floatingName" placeholder="Enter Name" asp-for="Id" readonly>
+		<label for="floatingName">Name</label>
+	</div>
+
+	<div class="form-floating mb-3">
+		<input type="text" class="form-control" id="floatingName" placeholder="Enter Name" asp-for="Name">
+			<span class="text-danger" asp-validation-for="Name"></span>
+		<label for="floatingName">Name</label>
+	</div>
+
+	<div class="form-floating mb-3">
+		<input type="email" class="form-control" id="floatingEmail" placeholder="name@example.com" asp-for="Email">
+			<span class="text-danger" asp-validation-for="Email"></span>
+		<label for="floatingEmail">Email</label>
+	</div>
+
+	<div class="form-floating mb-3">
+		<input type="tel" class="form-control" id="floatingPhone" placeholder="Enter Phone Number" asp-for="Phone">
+			<span class="text-danger" asp-validation-for="Phone"></span>
+		<label for="floatingPhone">Phone</label>
+	</div>
+
+	<div class="form-check mb-3">
+		<input type="checkbox" class="form-check-input" id="floatingSubscribed" asp-for="Subscribed">
+		<label class="form-check-label" for="floatingSubscribed">Subscribed</label>
+	</div>
+
+	<div class="mt-3">
+		<button type="submit" class="btn btn-primary">Update Student</button>
+			<a asp-controller="Students" asp-action="List" class="btn btn-info">return back</a>
+	</div>
+
+</form>
+
+}

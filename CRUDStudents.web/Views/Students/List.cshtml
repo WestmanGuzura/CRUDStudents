@@ -1,0 +1,156 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+@model CRUDStudents.web.Models.ViewModals.StudentsListViewModel
+
+<h1>Students</h1>
+
+<div class="row">
+    <div class="col-md-3 text-start">
+        <!-- Search Form -->
+        <form method="get" asp-action="List">
+            <input type="text" name="searchQuery" value="@Model.SearchQuery" placeholder="Search by name or email" />
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+
+    </div>
+    <div class="col-md-6 text-center">
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+
+		@if (TempData["ErrorMessage"] != null)
+		{
+			<div class="alert alert-danger">
+				@TempData["ErrorMessage"]
+			</div>
+		}
+    </div>
+    <div class="col-md-3 text-end">
+		<!-- Add Student Button -->
+		<a asp-controller="Students" asp-action="Add" class="btn btn-info">Add Student</a>
+    </div>
+</div>
+
+
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>NAME</th>
+            <th>EMAIL</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model.Students)
+        {
+            <tr>
+                <td>@student.Id</td>
+                <td>@student.Name</td>
+                <td>@student.Email</td>
+                <td>
+                    <a asp-controller="Students" asp-action="Edit" asp-route-id="@student.Id" class="btn btn-success btn-sm">Edit</a>
+
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal-@student.Id">
+                        Delete
+                    </button>
+
+                    @* <a asp-controller="Students" asp-action="Delete" asp-route-id="@student.Id" class="btn btn-danger btn-sm" *@
+                    @*    onclick="return confirm('Are you sure you want to delete this student?');">Delete</a> *@
+                </td>
+            </tr>
+
+            <div class="modal fade" id="deleteModal-@student.Id" tabindex="-1" aria-labelledby="deleteModalLabel-@student.Id" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel-@student.Id">Confirm Delete</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete the student <strong>@student.Name</strong>?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <a asp-controller="Students" asp-action="Delete" asp-route-id="@student.Id" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </tbody>
+</table>
+
+<!-- Pagination Controls -->
+<nav>
+   <ul class="pagination">
+       <!-- Previous Button -->
+       <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+           <a class="page-link" asp-action="List" asp-route-page="@(Model.CurrentPage - 1)" asp-route-searchQuery="@Model.SearchQuery">Previous</a>
+       </li>
+
+       @for (int i = 1; i <= Model.TotalPages; i++)
+       {
+           <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+               <a class="page-link" asp-action="List" asp-route-page="@i" asp-route-searchQuery="@Model.SearchQuery">@i</a>
+           </li>
+       }
+
+       <!-- Next Button -->
+       <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+           <a class="page-link" asp-action="List" asp-route-page="@(Model.CurrentPage + 1)" asp-route-searchQuery="@Model.SearchQuery">Next</a>
+       </li>
+   </ul>
+</nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* @model List<CRUDStudents.web.Models.Entities.Students> *@
+
+
+@* <h1>Students</h1> *@
+
+@* <table class="table table-hover table-striped "> *@
+@*     <thead> *@
+@*         <tr> *@
+@*             <th>ID</th> *@
+@*             <th>NAME</th> *@
+@*             <th>EMAIL</th> *@
+@*             <th></th> *@
+@*         </tr> *@
+@*     </thead> *@
+
+@*     <tbody> *@
+@*         @foreach (var student in Model ) *@
+@*         { *@
+@*             <tr> *@
+@*                 <td>@student.Id</td> *@
+@*                 <td>@student.Name</td> *@
+@*                 <td>@student.Email</td> *@
+@*                 <td> *@
+@*                     <a asp-controller="Students" asp-action="Edit" asp-route-id="@student.Id" class="btn btn-success btn-sm">Edit</a> *@
+@*                     <a asp-controller="Students" asp-action="Delete" asp-route-id="@student.Id" class="btn btn-danger btn-sm">Delete</a> *@
+@*                 </td> *@
+@*             </tr> *@
+@*         } *@
+@*     </tbody> *@
+@* </table> *@
